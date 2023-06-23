@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Customers
+namespace Application.Features.Customers.Queries.GetCustomerDetails
 {
     public class GetCustomerDetailQueryHandler : IRequestHandler<GetCustomerDetailQuery, CustomerDetailsVM>
     {
@@ -23,7 +23,7 @@ namespace Application.Features.Customers
             _mapper = mapper;
         }
 
-        public async Task<CustomerDetailsVM> Handle(GetCustomerDetailQuery request,CancellationToken cancellationToken)
+        public async Task<CustomerDetailsVM> Handle(GetCustomerDetailQuery request, CancellationToken cancellationToken)
         {
             var customer = await _customerRepository.GetByIdAsync(request.Id);
             return _mapper.Map<CustomerDetailsVM>(customer);

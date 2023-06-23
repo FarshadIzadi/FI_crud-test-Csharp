@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Customers
+namespace Application.Features.Customers.Queries.GetCustomersList
 {
     public class GetCustomersListQueryHandler : IRequestHandler<GetCustomersListQuery, List<CustomerListVM>>
     {

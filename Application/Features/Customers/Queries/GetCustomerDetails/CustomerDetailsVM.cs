@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Customers
+namespace Application.Features.Customers.Queries.GetCustomerDetails
 {
     public class CustomerDetailsVM : Customer
     {
