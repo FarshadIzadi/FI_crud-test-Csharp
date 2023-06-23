@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Customers.Commands.CreateCustomer
 {
-    internal class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, int>
+    public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, CreateCustomerResponse>
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
@@ -21,13 +21,29 @@ namespace Application.Features.Customers.Commands.CreateCustomer
             _customerRepository = customerRepository;
         }
 
-        public async Task<int> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<CreateCustomerResponse> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = _mapper.Map<Customer>(request);
+            var createCustomerResponse = new CreateCustomerResponse();
 
-            customer = await _customerRepository.AddAsync(customer);
+            var validator = new CreateCustomerValidator(_customerRepository);
+            var validationResult = await validator.ValidateAsync(request);
 
-            return customer.Id;
+            if (validationResult.Errors.Count > 0)
+            {
+                createCustomerResponse.Success = false;
+                createCustomerResponse.ValidationErrors = new List<string>();
+                foreach (var error in validationResult.Errors) {
+                    createCustomerResponse.ValidationErrors.Add(error.ErrorMessage);
+                }
+            }
+            if (createCustomerResponse.Success)
+            {
+                var customer = _mapper.Map<Customer>(request);
+                customer = await _customerRepository.AddAsync(customer);
+                createCustomerResponse.createCustomerDTO = _mapper.Map<CreateCustomerDTO>(customer);
+            }
+
+            return createCustomerResponse;
         }
     }
 }

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Customers.Commands.CreateCustomer
 {
-    internal class CreateCustomerCommand : IRequest<int>
+    public class CreateCustomerCommand : IRequest<CreateCustomerResponse>
     {
-        public int FirstName { get; set; }
-        public int LastName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string PhoneNmber { get; set; }
         public string Email { get; set; }
