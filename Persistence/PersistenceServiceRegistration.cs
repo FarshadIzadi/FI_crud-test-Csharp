@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Application.Contracts.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Data;
@@ -16,8 +17,12 @@ namespace Persistence
         public static IServiceCollection AppPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite(configuration.GetConnectionString("default")));
-            services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
+                options.UseSqlite(configuration.GetConnectionString("default")));
+
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
+
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+
             return services;
         }
     }
