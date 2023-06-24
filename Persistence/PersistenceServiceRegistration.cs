@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Persistence
 {
-    public static class DependencyInjection
+    public static class PersistenceServiceRegistration
     {
         public static IServiceCollection AppPersistence(this IServiceCollection services, IConfiguration configuration)
         {
