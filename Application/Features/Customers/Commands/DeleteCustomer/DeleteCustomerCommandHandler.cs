@@ -1,5 +1,4 @@
 ﻿using Application.Contracts.Persistence;
-using AutoMapper;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,14 +8,12 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Customers.Commands.DeleteCustomer
 {
-    internal class CustomerDeleteCommandHandler : IRequestHandler<DeleteCustomerCommand>
+    public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand>
     {
         private readonly ICustomerRepository _customerRepository;
-        private readonly IMapper _mapper;
 
-        public CustomerDeleteCommandHandler(IMapper mapper, ICustomerRepository customerRepository)
+        public DeleteCustomerCommandHandler(ICustomerRepository customerRepository)
         {
-            _mapper = mapper;
             _customerRepository = customerRepository;
         }
 
@@ -27,6 +24,11 @@ namespace Application.Features.Customers.Commands.DeleteCustomer
             await _customerRepository.DeleteAsync(customerToDelete);
             return Unit.Value;
 
+        }
+
+        Task IRequestHandler<DeleteCustomerCommand>.Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

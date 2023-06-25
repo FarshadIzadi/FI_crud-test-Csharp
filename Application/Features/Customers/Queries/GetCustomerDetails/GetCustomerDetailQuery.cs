@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Customers.Queries.GetCustomerDetails
 {
-    public class GetCustomerDetailQuery : IRequest<CustomerDetailsVM>
+    public class GetCustomerDetailQuery : IRequest<CustomerDetailVM>
     {
         public int Id { get; set; }
     }

@@ -43,16 +43,15 @@ namespace Application.Features.Customers.Commands.CreateCustomer
             RuleFor(property => property.PhoneNmber)
                  .NotEmpty()
                  .NotNull().WithMessage("Phone Number is required.")
-                 .MinimumLength(10).WithMessage("PhoneNumber must not be less than 10 characters.")
-                 .MaximumLength(20).WithMessage("PhoneNumber must not exceed 50 characters.")
-                 .Matches(new Regex(@"((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}")).WithMessage("PhoneNumber not valid");
+                 .MinimumLength(10).MaximumLength(10).WithMessage("PhoneNumber not valid");
 
             RuleFor(property => property.Email)
                 .EmailAddress()
                 .Must(x => isEmailUnique(x).GetAwaiter().GetResult())
                 .WithMessage("Email Already Exists");
-            
-            RuleFor(property => property.BankAccountNumber).CreditCard();
+
+            RuleFor(property => property.BankAccountNumber)
+                .MinimumLength(16).MaximumLength(16);
         }
 
         public async Task<bool> isEmailUnique(string email)

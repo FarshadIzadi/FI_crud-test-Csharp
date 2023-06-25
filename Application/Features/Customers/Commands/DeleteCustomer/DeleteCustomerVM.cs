@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Customers.Queries.GetCustomerDetails
+namespace Application.Features.Customers.Commands.DeleteCustomer
 {
-    public class CustomerDetailsVM : Customer
+    internal class DeleteCustomerVM : Customer
     {
-
     }
 }
+

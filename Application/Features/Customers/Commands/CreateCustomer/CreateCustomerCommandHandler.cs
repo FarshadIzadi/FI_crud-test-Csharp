@@ -1,10 +1,10 @@
 ﻿using Application.Contracts.Persistence;
-using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,11 +13,9 @@ namespace Application.Features.Customers.Commands.CreateCustomer
     public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, CreateCustomerResponse>
     {
         private readonly ICustomerRepository _customerRepository;
-        private readonly IMapper _mapper;
 
-        public CreateCustomerCommandHandler(IMapper mapper, ICustomerRepository customerRepository)
+        public CreateCustomerCommandHandler(ICustomerRepository customerRepository)
         {
-            _mapper = mapper;
             _customerRepository = customerRepository;
         }
 
@@ -31,16 +29,33 @@ namespace Application.Features.Customers.Commands.CreateCustomer
             if (validationResult.Errors.Count > 0)
             {
                 createCustomerResponse.Success = false;
-                createCustomerResponse.ValidationErrors = new List<string>();
+                createCustomerResponse.Errors = new List<string>();
                 foreach (var error in validationResult.Errors) {
-                    createCustomerResponse.ValidationErrors.Add(error.ErrorMessage);
+                    createCustomerResponse.Errors.Add(error.ErrorMessage);
                 }
             }
             if (createCustomerResponse.Success)
             {
-                var customer = _mapper.Map<Customer>(request);
+                var customer = new Customer()
+                {
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    DateOfBirth = request.DateOfBirth,
+                    BankAccountNumber = request.BankAccountNumber,
+                    Email = request.Email,
+                    PhoneNmber = request.PhoneNmber
+                };
                 customer = await _customerRepository.AddAsync(customer);
-                createCustomerResponse.createCustomerDTO = _mapper.Map<CreateCustomerDTO>(customer);
+                
+                createCustomerResponse = new CreateCustomerResponse()
+                {
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    DateOfBirth = customer.DateOfBirth,
+                    Email = customer.Email,
+                    PhoneNmber = customer.PhoneNmber,
+                    Errors = null
+                };
             }
 
             return createCustomerResponse;

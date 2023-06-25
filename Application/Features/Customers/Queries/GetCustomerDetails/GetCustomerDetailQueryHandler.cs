@@ -1,5 +1,5 @@
 ﻿using Application.Contracts.Persistence;
-using AutoMapper;
+using Application.Features.Customers.Commands.DeleteCustomer;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -10,23 +10,31 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Customers.Queries.GetCustomerDetails
 {
-    public class GetCustomerDetailQueryHandler : IRequestHandler<GetCustomerDetailQuery, CustomerDetailsVM>
+    public class GetCustomerDetailQueryHandler : IRequestHandler<GetCustomerDetailQuery, CustomerDetailVM>
     {
 
         private readonly IAsyncRepository<Customer> _customerRepository;
-        private readonly IMapper _mapper;
 
-        public GetCustomerDetailQueryHandler(IMapper mapper,
-                                        IAsyncRepository<Customer> customerRepository)
+        public GetCustomerDetailQueryHandler(IAsyncRepository<Customer> customerRepository)
         {
             _customerRepository = customerRepository;
-            _mapper = mapper;
         }
 
-        public async Task<CustomerDetailsVM> Handle(GetCustomerDetailQuery request, CancellationToken cancellationToken)
+        public async Task<CustomerDetailVM> Handle(GetCustomerDetailQuery request, CancellationToken cancellationToken)
         {
             var customer = await _customerRepository.GetByIdAsync(request.Id);
-            return _mapper.Map<CustomerDetailsVM>(customer);
+
+            var customerDetailVM = new CustomerDetailVM()
+            {
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                PhoneNmber = customer.PhoneNmber,
+                Email = customer.Email,
+                BankAccountNumber = customer.BankAccountNumber,
+                DateOfBirth = customer.DateOfBirth,
+            };
+
+            return customerDetailVM;
         }
     }
 }

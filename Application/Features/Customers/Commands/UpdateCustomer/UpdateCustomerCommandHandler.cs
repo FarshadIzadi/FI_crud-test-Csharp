@@ -1,5 +1,4 @@
 ﻿using Application.Contracts.Persistence;
-using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -10,25 +9,27 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Customers.Commands.UpdateCustomer
 {
-    internal class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand>
+    public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand>
     {
         private readonly ICustomerRepository _customerRepository;
-        private readonly IMapper _mapper;
 
-        public UpdateCustomerCommandHandler(ICustomerRepository customerRepository, IMapper mapper)
+        public UpdateCustomerCommandHandler(ICustomerRepository customerRepository)
         {
             _customerRepository = customerRepository;
-            _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+        async Task IRequestHandler<UpdateCustomerCommand>.Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
             var customerToUpdate = await _customerRepository.GetByIdAsync(request.Id);
 
-            _mapper.Map(request, customerToUpdate, typeof(UpdateCustomerCommand), typeof(Customer));
-            await _customerRepository.UpdateAsync(customerToUpdate);
-            return Unit.Value;
+            customerToUpdate.FirstName = request.FirstName;
+            customerToUpdate.LastName = request.LastName;
+            customerToUpdate.DateOfBirth = request.DateOfBirth;
+            customerToUpdate.PhoneNmber = request.PhoneNmber;
+            customerToUpdate.Email = request.Email;
+            customerToUpdate.BankAccountNumber = request.BankAccountNumber;
 
+            await _customerRepository.UpdateAsync(customerToUpdate);
         }
     }
 }

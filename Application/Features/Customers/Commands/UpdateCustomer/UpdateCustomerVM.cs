@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Customers.Queries.GetCustomersList
+namespace Application.Features.Customers.Commands.UpdateCustomer
 {
-    public class CustomerListVM
+    public class UpdateCustomerVM
     {
-        public int FirstName { get; set; }
-
-        public int LastName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 
@@ -19,6 +19,5 @@ namespace Application.Features.Customers.Queries.GetCustomersList
         public string Email { get; set; }
 
         public string BankAccountNumber { get; set; }
-
     }
 }
