@@ -12,9 +12,9 @@ namespace Application.Features.Customers.Commands.CreateCustomer
 {
     public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, CreateCustomerResponse>
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly IAsyncRepository<Customer> _customerRepository;
 
-        public CreateCustomerCommandHandler(ICustomerRepository customerRepository)
+        public CreateCustomerCommandHandler(IAsyncRepository<Customer> customerRepository)
         {
             _customerRepository = customerRepository;
         }

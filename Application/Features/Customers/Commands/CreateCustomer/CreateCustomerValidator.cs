@@ -13,9 +13,9 @@ namespace Application.Features.Customers.Commands.CreateCustomer
 {
     internal class CreateCustomerValidator : AbstractValidator<CreateCustomerCommand>
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly IAsyncRepository<Customer> _customerRepository;
 
-        public CreateCustomerValidator(ICustomerRepository customerRepository)
+        public CreateCustomerValidator(IAsyncRepository<Customer> customerRepository)
         {
 
             _customerRepository = customerRepository;
